@@ -40,7 +40,6 @@ class App extends React.Component<{}, State> {
     let { name } = event.target;
     const { value, type, checked } = event.target;
 
-    // Remap name for the typo requirement from README
     if (name === 'fnimationDuration') {
       name = 'animationDuration';
     }
