@@ -27,9 +27,11 @@ const Carousel: React.FC<CarouselProps> = ({
   const handleNext = () => {
     setPosition(prev => {
       const newPosition = prev + step;
+
       if (newPosition > maxPosition) {
         return infinite ? 0 : maxPosition;
       }
+
       return newPosition;
     });
   };
@@ -37,9 +39,11 @@ const Carousel: React.FC<CarouselProps> = ({
   const handlePrev = () => {
     setPosition(prev => {
       const newPosition = prev - step;
+
       if (newPosition < 0) {
         return infinite ? maxPosition : 0;
       }
+
       return newPosition;
     });
   };
@@ -65,7 +69,11 @@ const Carousel: React.FC<CarouselProps> = ({
         </ul>
       </div>
 
-      <button onClick={handlePrev} type="button" disabled={!infinite && position === 0}>
+      <button
+        onClick={handlePrev}
+        type="button"
+        disabled={!infinite && position === 0}
+      >
         Prev
       </button>
       <button

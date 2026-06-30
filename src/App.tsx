@@ -45,21 +45,14 @@ class App extends React.Component<{}, State> {
       name = 'animationDuration';
     }
 
-    this.setState({ [name]: type === 'checkbox' ? checked : Number(value) } as Pick<
-      State,
-      keyof State
-    >);
+    this.setState({
+      [name]: type === 'checkbox' ? checked : Number(value),
+    } as Pick<State, keyof State>);
   };
 
   render() {
-    const {
-      images,
-      step,
-      frameSize,
-      itemWidth,
-      animationDuration,
-      infinite,
-    } = this.state;
+    const { images, step, frameSize, itemWidth, animationDuration, infinite } =
+      this.state;
 
     return (
       <div className="App">

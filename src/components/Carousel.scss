@@ -1,6 +1,7 @@
 .conteiner {
   overflow: hidden;
   border: 1px solid #ccc;
+  min-width: 0; /* Fix for flex item not respecting width */
 }
 
 .Carousel__list {
