@@ -47,7 +47,7 @@ class App extends React.Component<{}, State> {
 
     this.setState({
       [name]: type === 'checkbox' ? checked : Number(value),
-    } as Pick<State, keyof State>);
+    } as unknown as Pick<State, keyof State>);
   };
 
   render() {
