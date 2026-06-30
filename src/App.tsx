@@ -8,6 +8,7 @@ interface State {
   frameSize: number;
   itemWidth: number;
   animationDuration: number;
+  infinite: boolean;
 }
 
 class App extends React.Component<{}, State> {
@@ -28,12 +29,26 @@ class App extends React.Component<{}, State> {
     frameSize: 3,
     itemWidth: 130,
     animationDuration: 1000,
+    infinite: false,
   };
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+  componentDidMount() {
+    document.title = 'React Carousel';
+  }
 
-    this.setState({ [name]: Number(value) } as unknown as Pick<State, keyof State>);
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let { name } = event.target;
+    const { value, type, checked } = event.target;
+
+    // Remap name for the typo requirement from README
+    if (name === 'fnimationDuration') {
+      name = 'animationDuration';
+    }
+
+    this.setState({ [name]: type === 'checkbox' ? checked : Number(value) } as Pick<
+      State,
+      keyof State
+    >);
   };
 
   render() {
@@ -43,24 +58,66 @@ class App extends React.Component<{}, State> {
       frameSize,
       itemWidth,
       animationDuration,
+      infinite,
     } = this.state;
 
     return (
       <div className="App">
         <h1 data-cy="title">Carousel</h1>
 
-        <div className="controls" style={{ marginBottom: '20px', display: 'flex', gap: '15px' }}>
-          <label htmlFor="step">Step:</label>
-          <input type="number" name="step" id="step" value={step} onChange={this.handleInputChange} />
+        <div
+          className="controls"
+          style={{
+            marginBottom: '20px',
+            display: 'flex',
+            gap: '15px',
+            alignItems: 'center',
+          }}
+        >
+          <label htmlFor="stepId">Step:</label>
+          <input
+            type="number"
+            name="step"
+            id="stepId"
+            value={step}
+            onChange={this.handleInputChange}
+          />
 
-          <label htmlFor="frameSize">Frame Size:</label>
-          <input type="number" name="frameSize" id="frameSize" value={frameSize} onChange={this.handleInputChange} />
+          <label htmlFor="frameId">Frame Size:</label>
+          <input
+            type="number"
+            name="frameSize"
+            id="frameId"
+            value={frameSize}
+            onChange={this.handleInputChange}
+          />
 
-          <label htmlFor="itemWidth">Item Width (px):</label>
-          <input type="number" name="itemWidth" id="itemWidth" value={itemWidth} onChange={this.handleInputChange} />
+          <label htmlFor="itemId">Item Width (px):</label>
+          <input
+            type="number"
+            name="itemWidth"
+            id="itemId"
+            value={itemWidth}
+            onChange={this.handleInputChange}
+          />
 
-          <label htmlFor="animationDuration">Animation (ms):</label>
-          <input type="number" name="animationDuration" id="animationDuration" value={animationDuration} onChange={this.handleInputChange} />
+          <label htmlFor="fnimationDuration">Animation (ms):</label>
+          <input
+            type="number"
+            name="fnimationDuration"
+            id="fnimationDuration"
+            value={animationDuration}
+            onChange={this.handleInputChange}
+          />
+
+          <label htmlFor="infinite">Infinite:</label>
+          <input
+            type="checkbox"
+            name="infinite"
+            id="infinite"
+            checked={infinite}
+            onChange={this.handleInputChange}
+          />
         </div>
 
         <Carousel
@@ -69,6 +126,7 @@ class App extends React.Component<{}, State> {
           frameSize={frameSize}
           itemWidth={itemWidth}
           animationDuration={animationDuration}
+          infinite={infinite}
         />
       </div>
     );

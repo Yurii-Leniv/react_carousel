@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import './Carousel.scss';
 
-
-
 type CarouselProps = {
   images: string[];
   step: number;
   frameSize: number;
   itemWidth: number;
   animationDuration: number;
-}
+  infinite?: boolean;
+};
 
-
-
-const Carousel: React.FC<CarouselProps> = ({ images, step, frameSize, itemWidth, animationDuration }) =>{
+const Carousel: React.FC<CarouselProps> = ({
+  images,
+  step,
+  frameSize,
+  itemWidth,
+  animationDuration,
+  infinite = false,
+}) => {
   const [position, setPosition] = useState(0);
 
   // Обчислюємо максимально можливу позицію.
@@ -21,12 +25,23 @@ const Carousel: React.FC<CarouselProps> = ({ images, step, frameSize, itemWidth,
   const maxPosition = Math.max(0, images.length - frameSize);
 
   const handleNext = () => {
-    // Не дозволяємо новій позиції бути більшою за максимальну.
-    setPosition(prev => Math.min(prev + step, maxPosition));
+    setPosition(prev => {
+      const newPosition = prev + step;
+      if (newPosition > maxPosition) {
+        return infinite ? 0 : maxPosition;
+      }
+      return newPosition;
+    });
   };
 
   const handlePrev = () => {
-    setPosition(prev => Math.max(prev - step, 0));
+    setPosition(prev => {
+      const newPosition = prev - step;
+      if (newPosition < 0) {
+        return infinite ? maxPosition : 0;
+      }
+      return newPosition;
+    });
   };
 
   return (
@@ -50,19 +65,19 @@ const Carousel: React.FC<CarouselProps> = ({ images, step, frameSize, itemWidth,
         </ul>
       </div>
 
-      <button
-        onClick={handlePrev}
-        type="button"
-        disabled={position === 0}
-      >Prev</button>
+      <button onClick={handlePrev} type="button" disabled={!infinite && position === 0}>
+        Prev
+      </button>
       <button
         onClick={handleNext}
         type="button"
         data-cy="next"
-        disabled={position >= maxPosition}
-      >Next</button>
+        disabled={!infinite && position >= maxPosition}
+      >
+        Next
+      </button>
     </div>
   );
-}
+};
 
 export default Carousel;
